@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screen Share</title>
+</head>
+<body style="background: linear-gradient(90deg, #000, #e1e0e0);">
+  
+    <img style="width: 90%; height: 90%; margin-top: 2%; margin-left: 5%"/>
+    <div class="error" id="error" style="margin: 200px 40%; color: red; font-weight: bolder; font-size: 45px;"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js" crossorigin="anonymous"></script>
+
+    <script>
+
+window.onload = function() {
+            var room = prompt("Please enter room ID : ");
+            if(room.trim().length == 0) { 
+                document.getElementById("error").innerHTML= "INVALID ROOM ID";
+                return;
+            }
+
+            socket = io.connect('http://127.0.0.1:5000');
+
+             socket.emit("join-message", room);
+            socket.on('screen-data', function(message){
+                $("img").attr("src", "data:image/png;base64," + message);
+
+            })
+        }
+
+    </script>
+    
+</body>
+</html>
